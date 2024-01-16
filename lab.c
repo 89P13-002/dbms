@@ -13,7 +13,22 @@ typedef struct product
     char region[10];
     void (*printData)(struct product *);
 } product;
-
+int getMonthValue(const char *month) {
+    // Map month names to numerical values
+    if (strcmp(month, "Jan") == 0) return 1;
+    if (strcmp(month, "Feb") == 0) return 2;
+    if (strcmp(month, "Mar") == 0) return 3;
+    if (strcmp(month, "Apr") == 0) return 4;
+    if (strcmp(month, "May") == 0) return 5;
+    if (strcmp(month, "Jun") == 0) return 6;
+    if (strcmp(month, "Jul") == 0) return 7;
+    if (strcmp(month, "Aug") == 0) return 8;
+    if (strcmp(month, "Sep") == 0) return 9;
+    if (strcmp(month, "Oct") == 0) return 10;
+    if (strcmp(month, "Nov") == 0) return 11;
+    if (strcmp(month, "Dec") == 0) return 12;
+    return 0;  // Invalid month
+}
 void printDataFunction(product *p) {
     printf("%s ", p->name);
     for (int i = 0; i < 10; i++) {
@@ -25,26 +40,96 @@ void printDataFunction(product *p) {
 
 void sort_in(product *p){
     int i,j;
-    for(i=0;i<10;i++){
-        for(j=i+1;j<10;j++){
-            int t = 0;
-            if(p->dat[i].year > p->dat[j].year){
-                t = 1;
-            }
-            else if (p->dat[i].year == p->dat[j].year){
-                if(strcmp(p->dat[i].mon , p->dat[j].mon)>0){
-                    t = 1;
-                }
-                else if(strcmp(p->dat[i].mon, p->dat[j].mon)==0){
-                    if((p->dat[i].mon > p->dat[j].mon)){
-                        t = 1;
-                    }
-                }
+    for (int i = 0; i < 10; i++) {
+        for (int j = i + 1; j < 10; j++) {
+            if (p->dat[i].year > p->dat[j].year ||
+                (p->dat[i].year == p->dat[j].year && getMonthValue(p->dat[i].mon) > getMonthValue(p->dat[j].mon)) ||
+                (p->dat[i].year == p->dat[j].year && getMonthValue(p->dat[i].mon) == getMonthValue(p->dat[j].mon) && p->dat[i].day > p->dat[j].day)) {
+                // Swap dates[i] and dates[j]
+                int y = p->dat[i].year;
+                int d = p->dat[i].day;
+                char m[4] ;
+                strcpy(m,p->dat[i].mon);
+                p->dat[i] = p->dat[j];
+                p->dat[j].day = d;
+                p->dat[j].year = y;
+                strcpy(p->dat[j].mon , m);
             }
         }
     }
 }
 
+void sort_de(product *p){
+    int i,j;
+    for (int i = 0; i < 10; i++) {
+        for (int j = i + 1; j < 10; j++) {
+            if (p->dat[i].year < p->dat[j].year ||
+                (p->dat[i].year == p->dat[j].year && getMonthValue(p->dat[i].mon) < getMonthValue(p->dat[j].mon)) ||
+                (p->dat[i].year == p->dat[j].year && getMonthValue(p->dat[i].mon) == getMonthValue(p->dat[j].mon) && p->dat[i].day < p->dat[j].day)) {
+                // Swap dates[i] and dates[j]
+                int y = p->dat[i].year;
+                int d = p->dat[i].day;
+                char m[4] ;
+                strcpy(m,p->dat[i].mon);
+                p->dat[i] = p->dat[j];
+                p->dat[j].day = d;
+                p->dat[j].year = y;
+                strcpy(p->dat[j].mon , m);
+            }
+        }
+    }
+}
+
+
+void sort_in_de(product *p){
+    int i,j;
+
+    for (int i = 0; i < 5; i++) {
+        for (int j = i + 1; j < 5; j++) {
+            if (p->dat[i].year > p->dat[j].year ||
+                (p->dat[i].year == p->dat[j].year && getMonthValue(p->dat[i].mon) > getMonthValue(p->dat[j].mon)) ||
+                (p->dat[i].year == p->dat[j].year && getMonthValue(p->dat[i].mon) == getMonthValue(p->dat[j].mon) && p->dat[i].day > p->dat[j].day)) {
+                // Swap dates[i] and dates[j]
+                int y = p->dat[i].year;
+                int d = p->dat[i].day;
+                char m[4] ;
+                strcpy(m,p->dat[i].mon);
+                p->dat[i] = p->dat[j];
+                p->dat[j].day = d;
+                p->dat[j].year = y;
+                strcpy(p->dat[j].mon , m);
+            }
+        }
+    }
+
+
+
+
+    for (int i = 5; i < 10; i++) {
+        for (int j = i + 1; j < 10; j++) {
+            if (p->dat[i].year < p->dat[j].year ||
+                (p->dat[i].year == p->dat[j].year && getMonthValue(p->dat[i].mon) < getMonthValue(p->dat[j].mon)) ||
+                (p->dat[i].year == p->dat[j].year && getMonthValue(p->dat[i].mon) == getMonthValue(p->dat[j].mon) && p->dat[i].day < p->dat[j].day)) {
+                // Swap dates[i] and dates[j]
+                int y = p->dat[i].year;
+                int d = p->dat[i].day;
+                char m[4] ;
+                strcpy(m,p->dat[i].mon);
+                p->dat[i] = p->dat[j];
+                p->dat[j].day = d;
+                p->dat[j].year = y;
+                strcpy(p->dat[j].mon , m);
+            }
+        }
+    }
+
+
+    for(i=9;i>=5;i--){
+        (p->dat[i].year == p->dat[4].year && getMonthValue(p->dat[i].mon) == getMonthValue(p->dat[4].mon) && p->dat[i].day == p->dat[4].day){
+            
+        }
+    }
+}
 
 int main()
 {
@@ -125,19 +210,21 @@ int main()
     fclose(fp);
     count =i;
     for(i=0;i<count;i++){
-        if(strcmp(entry[i].region , "West\n")==0){
-            printf("%d ",i+1);
+        if(strcmp(entry[i].region , "North\n")==0){
+            sort_in(&entry[i]);
             
         }
+        else if(strcmp(entry[i].region , "South\n")==0){
+            sort_de(&entry[i]);
+        }
         else if(strcmp(entry[i].region , "East\n")==0){
-
+            sort_in_de(&entry[i]);
         }
         else if(strcmp(entry[i].region , "West\n")==0){
 
         }
-        else{
-
-        }
     }
+
+    entry[1].printData(&entry[1]);
     return 0;
 }
