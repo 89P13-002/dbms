@@ -1,0 +1,30 @@
+Find the existing foreign key constraint:
+SELECT CONSTRAINT_NAME
+FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE TABLE_NAME = 'YourTableName' AND COLUMN_NAME = 'YourForeignKeyColumnName';
+
+
+ table named Orders with a primary key column named order_id, and you want to alter it:
+-- Drop existing primary key constraint
+ALTER TABLE Orders
+DROP CONSTRAINT PK_Orders;
+
+-- Add a new primary key constraint
+ALTER TABLE Orders
+ADD CONSTRAINT PK_Orders PRIMARY KEY (new_order_id);
+
+
+
+
+
+have a foreign key in a table named OrderDetails referencing the Orders table, and you want to alter it:
+-- Drop existing foreign key constraint
+ALTER TABLE OrderDetails
+DROP CONSTRAINT FK_OrderDetails_Orders;
+
+-- Add a new foreign key constraint
+ALTER TABLE OrderDetails
+ADD CONSTRAINT FK_OrderDetails_Orders 
+FOREIGN KEY (new_order_id)
+REFERENCES Orders(new_order_id);
+
